@@ -107,7 +107,7 @@ export default {
       listLoading: true,
       total: 0,
       currentPage: 1,
-      per_page: 5,
+      per_page: 2,
       Data: [],
       dialogVisible: false,
       dialogTitle: '',
@@ -131,7 +131,7 @@ export default {
       this.listLoading = true
       const params = {
         page: this.currentPage, // 获取当前页码
-        pageSize: 5
+        pageSize: this.per_page
       }
       console.log(params)
       paginationList(params).then(response => {
@@ -147,7 +147,6 @@ export default {
               this.list.push({}) // 添加空数据
             }
           }
-
           this.listLoading = false
           this.total = response.data.total
         } else {
