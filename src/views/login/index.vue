@@ -49,6 +49,8 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { setToken } from '@/utils/auth'
+import { login } from '@/api/user'
 export default {
   name: 'Login',
   data() {
@@ -100,19 +102,19 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              // 处理登录成功的逻辑
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch(() => {
-              // 处理登录失败的逻辑
-              this.loading = false
-            })
+      const params = {
+        username: this.loginForm.username,
+        password: this.loginForm.password
+      }
+      console.log(params)
+      login(params).then(response => {
+        if (response['resultCode'] === 200) {
+          this.$message('登录成功')
+          setToken('admin-token')
+          this.$router.push({ path: this.redirect || '/' })
+          // this.$router.replace({path:"/audit/index"})
+        } else {
+          this.$message(response['message'])
         }
       })
     },

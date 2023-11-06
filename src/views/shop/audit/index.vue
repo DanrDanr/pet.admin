@@ -260,6 +260,7 @@ export default {
       console.log(params)
       edit(params).then(response => {
         if (response['resultCode'] === 200) {
+          this.dialogVisible = false // 关闭弹窗
           this.$message('修改成功')
           this.fetchData()
         } else {
