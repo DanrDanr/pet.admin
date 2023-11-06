@@ -30,7 +30,7 @@ export function edit(data) {
 }
 export function pass(data) {
   return request({
-    url: '/api/shop/edit',
+    url: '/api/shop/pass',
     method: 'post',
     data
   })
