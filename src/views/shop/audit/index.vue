@@ -139,14 +139,6 @@ export default {
         if (response['resultCode'] === 200) {
           this.list = response.data.shops
           console.log(this.list)
-
-          // 判断数据的数量是否小于每页显示的数量
-          if (this.list.length < params.pageSize) {
-            const emptyCount = params.pageSize - this.list.length
-            for (let i = 0; i < emptyCount; i++) {
-              this.list.push({}) // 添加空数据
-            }
-          }
           this.listLoading = false
           this.total = response.data.total
         } else {

@@ -13,13 +13,10 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // do something before request is sent
-
-    if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+    // 这样可以为所以得请求都带上taken的请求头
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers['token'] = token
     }
     console.log(config.baseURL)
     console.log(config.url)

@@ -40,7 +40,6 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-
       <el-button :loading="loading" type="success" style="width:100%;margin-bottom:16px;" @click.native.prevent="handleLogin">登陆</el-button>
       <el-button class="shopRegister" :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handShopRegister">商家入驻</el-button>
     </el-form>
@@ -50,13 +49,14 @@
 <script>
 import { validUsername } from '@/utils/validate'
 import { setToken } from '@/utils/auth'
-import { login } from '@/api/user'
+// import { login } from '@/api/user'
+import { adminLogin } from '@/api/adminUser'
 export default {
   name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        // callback(new Error('Please enter the correct user name'))
       } else {
         callback()
       }
@@ -70,8 +70,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -103,16 +103,29 @@ export default {
     },
     handleLogin() {
       const params = {
-        username: this.loginForm.username,
+        phone: this.loginForm.username,
         password: this.loginForm.password
       }
-      console.log(params)
-      login(params).then(response => {
+      // 用户登陆
+      // login(params).then(response => {
+      //   if (response['resultCode'] === 200) {
+      //     this.$message('登录成功')
+      //     setToken('admin-token')
+      //     this.$router.push({ path: this.redirect || '/' })
+      //   } else {
+      //     this.$message(response['message'])
+      //   }
+      // })、、、//
+
+      // 管理员登陆
+      adminLogin(params).then(response => {
         if (response['resultCode'] === 200) {
           this.$message('登录成功')
+          const res = response.data
+          const token = res['token']
+          localStorage.setItem('token', token)
           setToken('admin-token')
           this.$router.push({ path: this.redirect || '/' })
-          // this.$router.replace({path:"/audit/index"})
         } else {
           this.$message(response['message'])
         }
